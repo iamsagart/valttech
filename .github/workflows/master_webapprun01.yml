@@ -47,7 +47,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: ASP-app
+          name: asp-net-app
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
