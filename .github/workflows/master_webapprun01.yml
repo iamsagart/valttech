@@ -25,9 +25,9 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore MyAspApp/MyAspApp.sln
 
-      # Build and publish the app to a folder (use dotnet publish if needed)
+      # Build and publish the app to a folder (using dotnet publish for simplicity)
       - name: Build and publish the app
-        run: msbuild MyAspApp/MyAspApp.sln /nologo /verbosity:m /t:Build /p:DeployOnBuild=true /p:PublishDir="published"
+        run: dotnet publish MyAspApp/MyAspApp.sln --configuration Release --output published
 
       # List contents of the published directory for debugging
       - name: List contents of published directory
