@@ -23,16 +23,18 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
 
       - name: Restore NuGet packages
-        run: nuget restore
+        run: nuget restore MyAspApp.sln
 
-      - name: Publish to folder
-        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-
-      - name: Upload artifact for deployment job
+     # Step 5: Build and publish the app to a folder
+      - name: Build and publish the app
+        run: msbuild MyAspApp.sln /nologo /verbosity:m /t:Build /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir="published"
+  
+     # Step 6: Upload the build artifact for the deploy job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: ASP-app
-          path: '/published/**'
+          name: asp-net-app
+          path: published/
 
   deploy:
     runs-on: windows-latest
