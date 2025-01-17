@@ -33,12 +33,16 @@ jobs:
       - name: List contents of published directory
         run: dir published
 
+      # Create a .zip file of the published folder for deployment
+      - name: Create zip file of published app
+        run: Compress-Archive -Path published\* -DestinationPath published.zip
+
       # Upload the build artifact for deployment job
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: asp-net-app
-          path: published/
+          path: published.zip
 
   deploy:
     runs-on: windows-latest
@@ -53,6 +57,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: asp-net-app
+
+      # Extract the zip file before deploying
+      - name: Extract zip file
+        run: Expand-Archive -Path published.zip -DestinationPath ./published
 
       # Deploy the app to Azure Web App
       - name: Deploy to Azure Web App
